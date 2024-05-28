@@ -1,7 +1,7 @@
 program Euler
 Implicit none          
-real*8 :: a, b, c, d   
-real*8 :: dt, h, tr     
+real*8 :: A, B, t    
+real*8 :: h, n, dt, A0, t0     ! TR é uma função
 integer :: n
 
 a = 1.0
@@ -16,4 +16,9 @@ do i = 1, n
     a = a - tr * h ! preciso entender como a e b se relacionam
     b = b - tr * h ! preciso entender como a e b se relacionam
     write (*,*) a, b, c, d
+
+Contains 
+
+function 
+
 End do
