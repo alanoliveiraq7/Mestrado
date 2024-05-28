@@ -1,14 +1,13 @@
 program Euler
 Implicit none          
-real*8 :: A, B, t    
-real*8 :: h, dt, A0, t0
-integer :: n
+real*8 :: A, B, t
+real*8 :: dt, A0, t0, h 
+integer :: n, i
 
 a = 1.0
-b = 1.0
 h = 0.1
 n = 10
-g = 0.1
+t0 = 0.1
 
 do i = 1, n
     c = c + tr * h ! preciso entender como incluir a participação de a e/ou b
@@ -19,6 +18,6 @@ do i = 1, n
 
 Contains 
 
-function 
+function !taxa de reação 
 
 End do
