@@ -1,7 +1,7 @@
 program Euler
-Implicit none           ! liberdade para declarar todas as variáveis driblemando o ação automatica do programa de definir real ou integer dependendo da letra declarada 
-real*8 :: a, b, c, d    ! abcd variáveis de concentração
-real*8 :: dt, h, tr     ! dt variação no tempo, h passo, tr taxa de reação
+Implicit none          
+real*8 :: a, b, c, d   
+real*8 :: dt, h, tr     
 integer :: n
 
 a = 1.0
