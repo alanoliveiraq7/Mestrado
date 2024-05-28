@@ -4,7 +4,7 @@ real*8 :: a, b, c, d    ! abcd variáveis de concentração
 real*8 :: dt, h, tr     ! dt variação no tempo, h passo, tr taxa de reação
 integer :: n
 
-a = 1.0
+a = 1.000
 b = 1.0
 h = 0.1
 n = 10
