@@ -1,7 +1,7 @@
 program Euler
 Implicit none          
 real*8 :: A, B, t    
-real*8 :: h, n, dt, A0, t0
+real*8 :: h, dt, A0, t0
 integer :: n
 
 a = 1.0
