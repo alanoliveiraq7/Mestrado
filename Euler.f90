@@ -20,20 +20,20 @@ program Euler
     k = 0.1
     dt = 0.01
     n_steps = 100
-    output_filename = "output_data.f90" ! Nome do arquivo de saída
+    output_filename = "output_data.f90" ! Nome do arquivo de saÃ­da
 
-    ! Alocação de memória para os arrays
+    ! AlocaÃ§Ã£o de memÃ³ria para os arrays
     allocate(A_values(n_steps))
     allocate(B_values(n_steps))
     allocate(C_values(n_steps))
 
-    ! Aplicação do método de Euler e armazenamento dos valores
+    ! AplicaÃ§Ã£o do mÃ©todo de Euler e armazenamento dos valores
     do n = 1, n_steps
         A_values(n) = A
         B_values(n) = B
         C_values(n) = C
 
-        ! Atualização das concentrações de A e B
+        ! AtualizaÃ§Ã£o das concentraÃ§Ãµes de A e B
         A = A - dt * taxa_reacao(A, B, k)
         B = B - dt * taxa_reacao(A, B, k)
         C = C + dt * taxa_reacao(A, B, k)
@@ -47,7 +47,7 @@ program Euler
     end do
     close(iunit)
 
-    ! Liberação da memória alocada
+    ! LiberaÃ§Ã£o da memÃ³ria alocada
     deallocate(A_values)
     deallocate(B_values)
     deallocate(C_values)
@@ -55,7 +55,7 @@ program Euler
     stop
 end program Euler
 
-! Função para a taxa de reação
+! FunÃ§Ã£o para a taxa de reaÃ§Ã£o
 real(8) function taxa_reacao(conc_A, conc_B, k)
     real(8), intent(in) :: conc_A, conc_B, k
     taxa_reacao = k * conc_A * conc_B
