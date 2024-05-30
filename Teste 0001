@@ -27,6 +27,4 @@ program Euler_Reaction
     end do
     close(10)
 
-    ! Criação do gráfico usando gnuplot
-    call system("gnuplot -persist -e ""plot 'dados.txt' using 1:2 with lines title 'Concentração de C'""")
-end program MetodoDeEuler_ReacaoQuimica
+end program Euler_Reaction
