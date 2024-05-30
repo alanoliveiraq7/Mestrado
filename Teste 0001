@@ -1,0 +1,32 @@
+program MetodoDeEuler_ReacaoQuimica
+    implicit none
+    real(8) :: t, dt, A, B, C, k
+    integer :: n, n_steps
+
+    ! Valores iniciais
+    t = 0.0
+    A = 1.0
+    B = 2.0
+    C = 0.0
+    k = 0.1
+    dt = 0.01
+    n_steps = 100
+
+    ! Função para a taxa de reação
+    real(8) function taxa_reacao(conc_A, conc_B)
+        real(8), intent(in) :: conc_A, conc_B
+        taxa_reacao = k * conc_A * conc_B
+    end function taxa_reacao
+
+    ! Aplicação do método de Euler e gravação dos dados
+    open(unit=10, file='dados.txt', status='unknown')
+    do n = 1, n_steps
+        C = C + dt * taxa_reacao(A, B)
+        t = t + dt
+        write(10,*) t, C
+    end do
+    close(10)
+
+    ! Criação do gráfico usando gnuplot
+    call system("gnuplot -persist -e ""plot 'dados.txt' using 1:2 with lines title 'Concentração de C'""")
+end program MetodoDeEuler_ReacaoQuimica
