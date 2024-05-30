@@ -1,4 +1,4 @@
-program MetodoDeEuler_ReacaoQuimica
+program Euler
     implicit none
     real(8) :: t, dt, A, B, C, k
     integer :: n, n_steps
@@ -53,5 +53,4 @@ program MetodoDeEuler_ReacaoQuimica
     deallocate(C_values)
 
     stop
-end program MetodoDeEuler_ReacaoQuimica
-
+end program Euler
