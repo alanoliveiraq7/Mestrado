@@ -1,23 +1,56 @@
 program Euler
-Implicit none          
-real*8 :: A, B, t
-real*8 :: dt, A0, t0, h 
-integer :: n, i
+    implicit none
+    real(8) :: t, dt, A, B, C, k
+    integer :: n, n_steps
+    real(8), dimension(:), allocatable :: A_values, B_values, C_values
+    character(len=100) :: output_filename
+    integer :: iunit
 
-a = 1.0
-h = 0.1
-n = 10
-t0 = 0.1
+    ! Valores iniciais
+    t = 0.0
+    A = 1.0
+    B = 2.0
+    C = 0.0
+    k = 0.1
+    dt = 0.01
+    n_steps = 100
+    output_filename = "output_data.f90" ! Nome do arquivo de saída
 
-do i = 1, n
-    c = c + tr * h ! preciso entender como incluir a participação de a e/ou b
-    d = d + tr * h ! preciso entender como incluir a participação de a e/ou b
-    a = a - tr * h ! preciso entender como a e b se relacionam
-    b = b - tr * h ! preciso entender como a e b se relacionam
-    write (*,*) a, b, c, d
+    ! Alocação de memória para os arrays
+    allocate(A_values(n_steps))
+    allocate(B_values(n_steps))
+    allocate(C_values(n_steps))
 
-Contains 
+    ! Função para a taxa de reação
+    real(8) function taxa_reacao(conc_A, conc_B)
+        real(8), intent(in) :: conc_A, conc_B
+        taxa_reacao = k * conc_A * conc_B
+    end function taxa_reacao
 
-function !taxa de reação 
+    ! Aplicação do método de Euler e armazenamento dos valores
+    do n = 1, n_steps
+        A_values(n) = A
+        B_values(n) = B
+        C_values(n) = C
 
-End do
+        ! Atualização das concentrações de A e B
+        A = A - dt * taxa_reacao(A, B)
+        B = B - dt * taxa_reacao(A, B)
+        C = C + dt * taxa_reacao(A, B)
+        t = t + dt
+    end do
+
+    ! Salvar os dados em um arquivo
+    open(unit=iunit, file=output_filename, status='replace')
+    do n = 1, n_steps
+        write(iunit, *) t, A_values(n), B_values(n), C_values(n)
+    end do
+    close(iunit)
+
+    ! Liberação da memória alocada
+    deallocate(A_values)
+    deallocate(B_values)
+    deallocate(C_values)
+
+    stop
+end program Euler
