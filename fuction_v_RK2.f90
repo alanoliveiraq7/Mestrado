@@ -6,7 +6,7 @@ program kinetics
 ! kinetic constant k
 ! time step h
 real*8 h,k
-real*8, dimension(3):: c,r
+real*8, dimension(3):: c,r, re,ce ! add re "r de Euler" e ce "C de euler"
 
 c=(/1d0,2d0,0d0/)
 k=1d0
@@ -25,9 +25,11 @@ enddo
 do j=1,100
 
     call subf(c)
-    t=t+h
+    re = e 
+		ce = c + h * re
+		t=t+h
     do i=1,3
-        c(i)=c(i)+h/2*(r(i)+r(i+3))
+        c(i)=c(i)+h/2*(re(i)+r(i))
         write(200+i,*) t,c(i)
     enddo
 
