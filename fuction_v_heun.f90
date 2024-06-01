@@ -8,9 +8,6 @@ program kinetics
     real*8 h,k
     real*8, dimension(3) :: c,r, re, ce ! adicionei re "r de Euler" e ce "C de euler"
 
-    integer :: j
-    real*8 :: t
-
     c=(/1d0,2d0,0d0/)
     k=1d0
     h=1d-2
@@ -20,11 +17,16 @@ program kinetics
     open(unit=202,file='bv.dat')
     open(unit=203,file='cv.dat')
 
-    ! Salva as concentrações iniciais
+
     write(201,*) t,c(1)
     write(202,*) t,c(2)
     write(203,*) t,c(3)
 
+    do i=1,3
+        write(200+i,*) t,c(i)
+    
+    enddo
+    
     do j=1,100
 
         call subf(c)
@@ -34,10 +36,10 @@ program kinetics
         call subf(ce)
         t = t + h
         do i=1,3
-            c(i) = c(i) + h / 2 * (re(i) + r(i))
+            c(i) = c(i) + h / 2 * (re(i) + r(i)) ! Estimativa inicial (Método de Euler)
         end do
 
-        ! Salva as concentrações atualizadas
+        ! Salva as concentraÃ§Ãµes atualizadas
         write(201,*) t,c(1)
         write(202,*) t,c(2)
         write(203,*) t,c(3)
