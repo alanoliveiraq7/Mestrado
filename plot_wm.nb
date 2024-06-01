@@ -1,0 +1,6 @@
+SetDirectory["C:\\Users\\Alan Oliveira\\Downloads"]
+a = Import["av.dat"];
+ListPlot[a, AxesOrigin -> {0, 0}]
+b = Import["bv.dat"];
+c = Import["cv.dat"];
+ListPlot[{a, b, c}, AxesOrigin -> {0, 0}]
