@@ -25,14 +25,13 @@ enddo
 do j=1,100
 
     call subf(c)
-    re = e 
-		ce = c + h * re
-		t=t+h
+    re = r 
+    ce = c + h * re  ! Estimativa inicial (Método de Euler)
+    
+    call subf(ce)
+    t = t + h
     do i=1,3
-        c(i)=c(i)+h/2*(re(i)+r(i))
-        write(200+i,*) t,c(i)
-    enddo
-
+    c(i) = c(i) + h / 2 * (re(i) + r(i))
     
     
 enddo
