@@ -5,7 +5,7 @@ real*8 tf,h,t,a
 integer cont,cont2,i,j,k,cont3,crit,nrint,nrpoints,crit2,ni
 integer conts,conts2
 integer, parameter :: lk = selected_int_kind(18)
-real*8 Cd,Ntot,Faraday,eappm,eapps,eapps0,rm,rs,cF,cFA,cWater,frt,ratek2,kcpl
+real*8 Cd,Ntot,Faraday,eappm,rm,cF,cFA,cWater,frt,ratek2,kcpl
 character(len=1) :: nfac
 
 Cd = 24d-6
@@ -16,7 +16,7 @@ cF = 3.55d-7
 cFA = 1.99d-4
 cWater = 55d-3
 frt = Faraday / (8.314d0 * 298.15d0)
-rs = 1d3
+
 rm = 2d3
 
 h = 1d-5
@@ -25,13 +25,13 @@ nrint = int(t / h)
 nrpoints = 1000
 crit2 = 2
 crit = 10000
-write(6,*) 'crit‚rio', crit
+write(6,*) 'critério', crit
 
 do ni = 1, 1
     write(6,*) 'j factor', ni
 
     kcpl = -9d2
-    eapps0 = 9.1d-1
+    !eapps0 = 9.1d-1
     eappm = 8.9d-1
 
     t = 0d0
@@ -105,7 +105,7 @@ do ni = 1, 1
                 write(6,*) "n =",ni,"   saving  =",cont2
             end if
 
-            eapps = eapps0 + kcpl * ( ((eappm-v(5))/rm) - ((eapps-v(5))/rm) )
+            !eapps = eapps0 + kcpl * ( ((eappm-v(5))/rm) - ((eapps-v(5))/rm) )
         enddo
     enddo
 enddo
