@@ -1,3 +1,6 @@
+Aqui está o seu código com a correção feita para as chamadas da função `v8r` e outras funções que requerem o array `x` como argumento:
+
+```fortran
 program main
 implicit none
 real*8, dimension(6) :: v,w,u,k1,k2,k3,k4
@@ -211,12 +214,4 @@ real function f6(x)
     f6 = v8(x) - v8r(x)
 end function
 
-real function vac(x)
-    real*8 x(:)
-    vac = 1d0 - 2d0 * x(1) - x(2) - 1.516d0 * x(3) - x(4)
-end function
-
-subroutine uf(x)
-    real*8 x(:)
-    u = (/f1(x), f2(x), f3(x), f4(x), f5(x), f6(x)/)
-end subroutine uf
+real function
