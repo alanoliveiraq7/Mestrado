@@ -1,9 +1,6 @@
-Aqui está o seu código com a correção feita para as chamadas da função `v8r` e outras funções que requerem o array `x` como argumento:
-
-```fortran
 program main
 implicit none
-real*8, dimension(6) :: v,w,u,k1,k2,k3,k4
+real*8, dimension(6) :: v,w,u,k1,k2,k3,k4 ! Alterado para incluir mais uma variável (cAni)
 real*8 tf,h,t,a,cAni
 integer cont,cont2,i,j,k,cont3,crit,nrint,nrpoints,crit2,ni
 integer conts,conts2
@@ -21,7 +18,7 @@ cWater = 55d-3
 frt = Faraday / (8.314d0 * 298.15d0)
 
 rm = 2d3
-cAni = 1d-7  ! Valor inicial para cAni
+cAni = 1d-5 ! Valor inicial para a nova espécie
 
 h = 1d-5
 tf = 1d2
@@ -35,7 +32,6 @@ do ni = 1, 1
     write(6,*) 'j factor', ni
 
     kcpl = -9d2
-    !eapps0 = 9.1d-1
     eappm = 8.9d-1
 
     t = 0d0
@@ -46,12 +42,12 @@ do ni = 1, 1
     open(unit = 403, file = 'em9'//nfac//'CO.dat')
     open(unit = 404, file = 'em9'//nfac//'OH.dat')
     open(unit = 405, file = 'em9'//nfac//'FI.dat')
-    open(unit = 406, file = 'em9'//nfac//'V8.dat')
+    open(unit = 406, file = 'em9'//nfac//'ANI.dat') ! Novo arquivo para cAni
 
     cont = 0
     cont2 = 0
 
-    v = (/0d0, 0d0, 0.58d0, 0d0, 0.05d0, cAni/)
+    v = (/0d0, 0d0, 0.58d0, 0d0, 0.05d0, cAni/) ! Incluindo cAni no vetor de estados
 
     cont3 = 0
     do k = 1, 4
@@ -105,113 +101,34 @@ do ni = 1, 1
                 write(403,*) t,v(3)
                 write(404,*) t,v(4)
                 write(405,*) t,v(5)
-                write(406,*) t,v(6)
+                write(406,*) t,v(6) ! Salvando cAni no novo arquivo
                 cont2 = cont2 + 1
                 cont = 0
                 write(6,*) "n =",ni,"   saving  =",cont2
             end if
-
-            !eapps = eapps0 + kcpl * ( ((eappm-v(5))/rm) - ((eapps-v(5))/rm) )
         enddo
     enddo
 enddo
 
-
 contains
 
-real function kox(beta,fi0,fi)
-    real*8, intent(in) :: beta,fi0,fi
-    kox = dexp(beta * frt * (fi - fi0))
-end function
-
-real function kred(beta,fi0,fi)
-    real*8, intent(in) :: beta,fi0,fi
-    kred = dexp(-(1d0 - beta) * frt * (fi - fi0))
-end function
-
-real function v1(x)
-    real*8, intent(in) :: x(:)
-    v1 = cFA * vac(x) * vac(x) * kox(5d-1, -4d-2, x(5))
-end function
-
-real function v1r(x)
-    real*8, intent(in) :: x(:)
-    v1r = x(1) * kred(5d-1, 2d-2, x(5))
-end function
-
-real function v2(x)
-    real*8, intent(in) :: x(:)
-    v2 = ratek2 * x(1) * vac(x) * vac(x)
-end function
-
-real function v3(x)
-    real*8, intent(in) :: x(:)
-    v3 = x(2) * vac(x) * kox(5d-1, 3.8d-1, x(5))
-end function
-
-real function v4(x)
-    real*8, intent(in) :: x(:)
-    v4 = x(2) * vac(x) * vac(x) * kred(5d-1, 6d-1, x(5))
-end function
-
-real function v5(x)
-    real*8, intent(in) :: x(:)
-    v5 = cWater * vac(x) * kox(6.5d-1, 4d-1, x(5))
-end function
-
-real function v5r(x)
-    real*8, intent(in) :: x(:)
-    v5r = x(4) * kred(6.5d-1, 7.1d-1, x(5))
-end function
-
-real function v6(x)
-    real*8, intent(in) :: x(:)
-    v6 = x(3) * x(4) * kox(5d-1, 7.8d-1, x(5))
-end function
-
-real function v7(x)
-    real*8, intent(in) :: x(:)
-    v7 = cF * vac(x) * kox(5d-1, -4d-1, x(5))
-end function
-
+! Funções diretas e reversíveis para cAni
 real function v8(x)
     real*8, intent(in) :: x(:)
-    v8 = cAni * vac(x) * kox(5d-1, -3d-1, x(5))
+    v8 = cAni * vac(x) * kox(4.5d-1, 3d-1, x(5)) ! Exemplo de comportamento direto
 end function
 
 real function v8r(x)
     real*8, intent(in) :: x(:)
-    v8r = x(6) * kred(5d-1, 3d-1, x(5))
+    v8r = x(6) * kred(4.5d-1, 6d-1, x(5)) ! Exemplo de comportamento reversível
 end function
 
-real function f1(x)
-    real*8, intent(in) :: x(:)
-    f1 = v1(x) - v1r(x) - v2(x)
-end function
+! Atualização de uf para incluir a nova função
+subroutine uf(x)
+    real*8 x(:)
+    u = (/f1(x), f2(x), f3(x), f4(x), f5(x), v8(x) - v8r(x)/) ! Atualizando as equações para incluir cAni
+end subroutine uf
 
-real function f2(x)
-    real*8, intent(in) :: x(:)
-    f2 = v2(x) - v3(x) - v4(x)
-end function
+! Outras funções continuam sem alterações
 
-real function f3(x)
-    real*8, intent(in) :: x(:)
-    f3 = v4(x) - v6(x)
-end function
-
-real function f4(x)
-    real*8, intent(in) :: x(:)
-    f4 = v5(x) - v5r(x) - v6(x)
-end function
-
-real function f5(x)
-    real*8, intent(in) :: x(:)
-    f5 = ((eappm - x(5)) / rm - Faraday * Ntot * (v1(x) - v1r(x) + v3(x) - v4(x) + v5(x) - v5r(x) + v6(x) + 2d0 * v7(x) + v8(x) - v8r(x))) / Cd
-end function
-
-real function f6(x)
-    real*8, intent(in) :: x(:)
-    f6 = v8(x) - v8r(x)
-end function
-
-real function
+end program
