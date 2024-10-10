@@ -198,3 +198,25 @@ end function
 
 real function f3(x)
     real*
+
+real function f4(x)
+    real*8, intent(in) :: x(:)
+    f4 = v5(x) - v5r(x) - v6(x)
+end function
+
+real function f5(x)
+    real*8, intent(in) :: x(:)
+    f5 = ((eappm - x(5)) / rm - Faraday * Ntot * (v1(x) - v1r(x) + v3(x) - v4(x) + v5(x) - v5r(x) + v6(x) + 2d0 * v7(x))) / Cd
+end function
+
+real function vac(x)
+    real*8 x(:)
+    vac = 1d0 - 2d0 * x(1) - x(2) - 1.516d0 * x(3) - x(4) - 2d0 * x(6)
+end function
+
+subroutine uf(x)
+    real*8 x(:)
+    u = (/f1(x), f2(x), f3(x), f4(x), f5(x), v8(x) - v8r(x)/) ! Atualizando as equações para incluir cAni
+end subroutine uf
+
+end program
